@@ -1,0 +1,85 @@
+body{
+  background-color: rgb(222, 248, 77);
+}
+.board {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.column {
+  flex: 1;
+  max-width: 35%;
+}
+
+.cards {
+  margin-top: 20px;
+}
+
+.card {
+  background-color: #dce2fc;
+  border: solid 1px black;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.column:nth-child(4) .card {
+  background-color: rgb(86, 218, 86);
+}
+
+.timestamp {
+  font-size: 13px;
+}
+
+.card-content {
+  margin-bottom: 10px;
+}
+
+h2 {
+  margin-top: 0;
+  border: solid 1px;
+  border-radius: 10px;
+  text-align: center;
+  padding: 5px;
+}
+
+button {
+  cursor: pointer;
+  font-size: 14px;
+  padding: 5px 10px;
+  border: none;
+  background-color: #4caf50;
+  color: white;
+  border-radius: 4px;
+}
+
+input,
+textarea {
+  width: 95%;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+input[type="date"] {
+  width: auto;
+}
+
+.expired {
+  font-weight: bold;
+}
+
+form {
+  margin-bottom: 20px;
+  border: solid 1px black;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: white;
+}
