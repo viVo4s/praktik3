@@ -52,15 +52,17 @@ new Vue({
       this.plannedTasks.push(newCard);
       this.clearForm();
     },
-    checkYear: function() {
+    validateDate: function() {
       const yearInput = document.querySelector('input[type="date"]');
-      const enteredYear = yearInput.value.slice(0, 4); // Получение первых четырех символов
-  
-      if (enteredYear.length !== 4) {
+      const enteredDate = yearInput.value;
+      const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+    
+      if (!dateRegex.test(enteredDate)) {
         // Вывести сообщение об ошибке или предпринять другие действия
-        console.log('Ошибка! Год должен состоять из четырех цифр.');
+        console.log('Ошибка! Неправильный формат даты.');
       }
     },
+
     editCard: function(card) {
       const newTitle = prompt('Введите новый заголовок', card.title);
       const newDescription = prompt('Введите новое описание', card.description);
@@ -91,6 +93,13 @@ new Vue({
     moveToCompleted: function(card) {
       this.testingTasks.splice(this.testingTasks.indexOf(card), 1);
       card.lastEdited = new Date().toLocaleString();
+    
+      if (this.isDeadlineExpired(card.deadline)) {
+        card.title += " ❌"; // Карточка отмечается как просроченная
+      } else {
+        card.title += " ✅"; // Карточка отмечается как выполненная в срок
+      }
+    
       this.completedTasks.push(card);
     },
     returnToProgress: function(card) {

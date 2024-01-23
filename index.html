@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <script src="vue.js"></script>
-  <link rel="stylesheet" href="style.css">
+  <title>kanban</title>
+  <script src="script/vue.js"></script>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <div id="app">
@@ -30,7 +30,7 @@
         <form @submit.prevent="addCard">
           <input v-model="newCardTitle" placeholder="Заголовок" required>
           <input v-model="newCardDescription" placeholder="Описание" required>
-          <input type="date" v-model="newCardDeadline" @change="checkYear" required>
+          <input type="date" v-model="newCardDeadline" @change="validateDate" required>
           <button type="submit">Создать карточку</button>
         </form>
       </div>
@@ -89,6 +89,6 @@
       </div>
     </div>
   </div>
-  <script src="main.js"></script>
+  <script src="script/main.js"></script>
 </body>
 </html>
