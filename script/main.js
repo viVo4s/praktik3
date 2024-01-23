@@ -95,9 +95,9 @@ new Vue({
       card.lastEdited = new Date().toLocaleString();
     
       if (this.isDeadlineExpired(card.deadline)) {
-        card.title += " ❌"; // Карточка отмечается как просроченная
+        card.title += "просроченна"; // Карточка отмечается как просроченная
       } else {
-        card.title += " ✅"; // Карточка отмечается как выполненная в срок
+        card.title += " зараниее"; // Карточка отмечается как выполненная в срок
       }
     
       this.completedTasks.push(card);

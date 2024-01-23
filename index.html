@@ -79,8 +79,8 @@
         <h2>Выполненные задачи</h2>
         <div class="cards">
           <div v-for="card in completedTasks" :key="card.id" class="card">
-            <div class="card-content">
-              <h3 :class="{ 'expired': isDeadlineExpired(card.deadline) }">{{ card.title }}</h3>
+            <div class="card-content" :class="{ 'completed': card.completed, 'expired': isDeadlineExpired(card.deadline) }">
+              <h3>{{ card.title }}</h3>
               <p>{{ card.description }}</p>
               <p>Дэдлайн: {{ card.deadline }}</p>
             </div>
