@@ -1,45 +1,27 @@
 new Vue({
   el: '#app',
-  data: {
-    plannedTasks: [],
-    inProgressTasks: [],
-    testingTasks: [],
-    completedTasks: [],
-    newCardTitle: '',
-    newCardDescription: '',
-    newCardDeadline: '',
+  data() {
+    return {
+      plannedTasks: [],
+      inProgressTasks: [],
+      testingTasks: [],
+      completedTasks: [],
+      newCardTitle: '',
+      newCardDescription: '',
+      newCardDeadline: ''
+    };
   },
   mounted() {
     this.loadTasksFromStorage();
   },
   watch: {
-    plannedTasks: {
-      handler() {
-        this.saveTasksToStorage();
-      },
-      deep: true,
-    },
-    inProgressTasks: {
-      handler() {
-        this.saveTasksToStorage();
-      },
-      deep: true,
-    },
-    testingTasks: {
-      handler() {
-        this.saveTasksToStorage();
-      },
-      deep: true,
-    },
-    completedTasks: {
-      handler() {
-        this.saveTasksToStorage();
-      },
-      deep: true,
-    },
+    plannedTasks: { handler: 'saveTasksToStorage', deep: true },
+    inProgressTasks: { handler: 'saveTasksToStorage', deep: true },
+    testingTasks: { handler: 'saveTasksToStorage', deep: true },
+    completedTasks: { handler: 'saveTasksToStorage', deep: true }
   },
   methods: {
-    addCard: function() {
+    addCard() {
       const newCard = {
         id: Date.now(),
         title: this.newCardTitle,
@@ -52,18 +34,16 @@ new Vue({
       this.plannedTasks.push(newCard);
       this.clearForm();
     },
-    validateDate: function() {
+    validateDate() {
       const yearInput = document.querySelector('input[type="date"]');
       const enteredDate = yearInput.value;
       const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
-    
+
       if (!dateRegex.test(enteredDate)) {
-        // Вывести сообщение об ошибке или предпринять другие действия
         console.log('Ошибка! Неправильный формат даты.');
       }
     },
-
-    editCard: function(card) {
+    editCard(card) {
       const newTitle = prompt('Введите новый заголовок', card.title);
       const newDescription = prompt('Введите новое описание', card.description);
 
@@ -73,36 +53,36 @@ new Vue({
         card.lastEdited = new Date().toLocaleString();
       }
     },
-    deleteCard: function(card) {
+    deleteCard(card) {
       const column = this.findColumn(card);
 
       if (column) {
         column.splice(column.indexOf(card), 1);
       }
     },
-    moveToInProgress: function(card) {
+    moveToInProgress(card) {
       this.plannedTasks.splice(this.plannedTasks.indexOf(card), 1);
       card.lastEdited = new Date().toLocaleString();
       this.inProgressTasks.push(card);
     },
-    moveToTesting: function(card) {
+    moveToTesting(card) {
       this.inProgressTasks.splice(this.inProgressTasks.indexOf(card), 1);
       card.lastEdited = new Date().toLocaleString();
       this.testingTasks.push(card);
     },
-    moveToCompleted: function(card) {
+    moveToCompleted(card) {
       this.testingTasks.splice(this.testingTasks.indexOf(card), 1);
       card.lastEdited = new Date().toLocaleString();
-    
+
       if (this.isDeadlineExpired(card.deadline)) {
-        card.title += "просроченна"; // Карточка отмечается как просроченная
+        card.title += " просрочена";
       } else {
-        card.title += " зараниее"; // Карточка отмечается как выполненная в срок
+        card.title += " заранее";
       }
-    
+
       this.completedTasks.push(card);
     },
-    returnToProgress: function(card) {
+    returnToProgress(card) {
       const reason = prompt('Введите причину возврата', '');
 
       if (reason) {
@@ -112,18 +92,18 @@ new Vue({
         this.inProgressTasks.push(card);
       }
     },
-    isDeadlineExpired: function(deadline) {
+    isDeadlineExpired(deadline) {
       const currentDate = new Date();
       const deadlineDate = new Date(deadline);
 
       return currentDate > deadlineDate;
     },
-    clearForm: function() {
+    clearForm() {
       this.newCardTitle = '';
       this.newCardDescription = '';
       this.newCardDeadline = '';
     },
-    findColumn: function(card) {
+    findColumn(card) {
       if (this.plannedTasks.includes(card)) {
         return this.plannedTasks;
       } else if (this.inProgressTasks.includes(card)) {
@@ -141,12 +121,13 @@ new Vue({
         plannedTasks: this.plannedTasks,
         inProgressTasks: this.inProgressTasks,
         testingTasks: this.testingTasks,
-        completedTasks: this.completedTasks,
+        completedTasks: this.completedTasks
       };
       localStorage.setItem('tasks', JSON.stringify(tasks));
     },
     loadTasksFromStorage() {
       const tasks = localStorage.getItem('tasks');
+
       if (tasks) {
         const parsedTasks = JSON.parse(tasks);
         this.plannedTasks = parsedTasks.plannedTasks || [];
@@ -154,6 +135,6 @@ new Vue({
         this.testingTasks = parsedTasks.testingTasks || [];
         this.completedTasks = parsedTasks.completedTasks || [];
       }
-    },
+    }
   }
 });
