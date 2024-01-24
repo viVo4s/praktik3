@@ -25,6 +25,7 @@
               <p>Дэдлайн: {{ card.deadline }}</p>
             </div>
             <button @click="moveToInProgress(card)">Переместить в работу</button>
+            
           </div>
         </div>
         <form @submit.prevent="addCard">

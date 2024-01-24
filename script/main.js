@@ -1,3 +1,4 @@
+
 new Vue({
   el: '#app',
   data() {
@@ -18,9 +19,19 @@ new Vue({
     plannedTasks: { handler: 'saveTasksToStorage', deep: true },
     inProgressTasks: { handler: 'saveTasksToStorage', deep: true },
     testingTasks: { handler: 'saveTasksToStorage', deep: true },
-    completedTasks: { handler: 'saveTasksToStorage', deep: true }
+    completedTasks: { handler: 'saveTasksToStorage', deep: true },
   },
   methods: {
+    toggleFavorite(card) {
+      const column = this.findColumn(card);
+
+      if (column) {
+          const index = column.indexOf(card)
+
+          console.log(column);
+          column[index].favorite = !column[index].favorite
+      }
+  },
     addCard() {
       const newCard = {
         id: Date.now(),
@@ -28,7 +39,8 @@ new Vue({
         description: this.newCardDescription,
         deadline: this.newCardDeadline,
         lastEdited: new Date().toLocaleString(),
-        returnReason: ''
+        returnReason: '',
+        isFavorite: false, 
       };
 
       this.plannedTasks.push(newCard);
@@ -60,6 +72,9 @@ new Vue({
         column.splice(column.indexOf(card), 1);
       }
     },
+    toggleFavorite(card) {
+      card.isFavorite = !card.isFavorite;
+    },
     moveToInProgress(card) {
       this.plannedTasks.splice(this.plannedTasks.indexOf(card), 1);
       card.lastEdited = new Date().toLocaleString();
@@ -75,9 +90,9 @@ new Vue({
       card.lastEdited = new Date().toLocaleString();
 
       if (this.isDeadlineExpired(card.deadline)) {
-        card.title += " просрочена";
+        card.title += ' просрочена';
       } else {
-        card.title += " заранее";
+        card.title += ' заранее';
       }
 
       this.completedTasks.push(card);
@@ -121,7 +136,7 @@ new Vue({
         plannedTasks: this.plannedTasks,
         inProgressTasks: this.inProgressTasks,
         testingTasks: this.testingTasks,
-        completedTasks: this.completedTasks
+        completedTasks: this.completedTasks,
       };
       localStorage.setItem('tasks', JSON.stringify(tasks));
     },
@@ -135,6 +150,52 @@ new Vue({
         this.testingTasks = parsedTasks.testingTasks || [];
         this.completedTasks = parsedTasks.completedTasks || [];
       }
-    }
-  }
+    },
+  },
+  computed: {
+      sortedPlannedTasks() {
+          console.log(this.plannedTasks);
+          return this.plannedTasks.sort((a, b) => {
+              if (a.favorite && !b.favorite) {
+                  return -1;
+              } else if (!a.favorite && b.favorite) {
+                  return 1;
+              }
+              return 0;
+          });
+      },
+      sortedInProgressTasks() {
+          console.log(this.inProgressTasks);
+          return this.inProgressTasks.sort((a, b) => {
+              if (a.favorite && !b.favorite) {
+                  return -1;
+              } else if (!a.favorite && b.favorite) {
+                  return 1;
+              }
+              return 0;
+          });
+      },
+      sortedtestingTasks() {
+          console.log(this.testingTasks);
+          return this.testingTasks.sort((a, b) => {
+              if (a.favorite && !b.favorite) {
+                  return -1;
+              } else if (!a.favorite && b.favorite) {
+                  return 1;
+              }
+              return 0;
+          });
+      },
+      sortedcompletedTasks() {
+          console.log(this.completedTasks);
+          return this.completedTasks.sort((a, b) => {
+              if (a.favorite && !b.favorite) {
+                  return -1;
+              } else if (!a.favorite && b.favorite) {
+                  return 1;
+              }
+              return 0;
+          });
+      }
+  },
 });
